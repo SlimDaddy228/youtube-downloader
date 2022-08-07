@@ -10,8 +10,9 @@
       >
         Field
       </v-text-field>
-      
+
       <template v-if="!videoData || url.length > 0">
+      <!-- Checks if it is loaded, or the user writes - then it displays the video download button, if the user clicks on the button, then the video is loaded with animation -->
         <v-btn>
           <template v-if="loading">
             <v-progress-circular
@@ -36,7 +37,7 @@
         </v-btn>
       </template>
 
-      <template v-if="videoData">
+      <template v-if="videoData"> <!-- Buttons to redirect video URL -->
         <v-btn
             v-for="item in videoData"
             :key="item.qualityLabel"
@@ -50,12 +51,12 @@
       </template>
 
       <template v-if="videoData">
-        <video
+        <video 
             v-for="(item, index) in videoData"
             v-if="item.quality === 134 && !item.hasAudio"
             :key="item.quality + index"
             class="mt-5"
-        >
+        > <!-- Loads an image if there is no video with sound -->
           <source :src="item.url" type="video/mp4" />
         </video>
         <video
@@ -64,7 +65,7 @@
             controls
             class="mt-5"
             :key="item.qualityLabel + index"
-        >
+        > <!-- Loads a video with sound to view it on the page, if available -->
           <source :src="item.url" type="video/mp4" />
         </video>
       </template>
@@ -90,6 +91,10 @@ export default {
     }
   },
   methods: {
+  /**
+   * Checking if this string === url link
+   * @param {str} string - The text to repeat
+   */
     isURL(str) {
       let url;
       try {
@@ -99,6 +104,10 @@ export default {
       }
       return url.protocol === "http:" || url.protocol === "https:";
     },
+  /**
+   * Redirect to URL link
+   * @param {url} string - The text to repeat
+   */
     onClickRedirect(url) {
       window.location.replace(url)
     },

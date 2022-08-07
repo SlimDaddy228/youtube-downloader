@@ -21,6 +21,7 @@
 
       <v-spacer/>
 
+      <!-- Uploads buttons to the navbar for navigating routes -->
       <v-btn
           class="ml-5"
           v-for="item in routes"
