@@ -10,6 +10,7 @@
       >
         Field
       </v-text-field>
+      
       <template v-if="!videoData || url.length > 0">
         <v-btn>
           <template v-if="loading">
@@ -34,6 +35,7 @@
           </template>
         </v-btn>
       </template>
+
       <template v-if="videoData">
         <v-btn
             v-for="item in videoData"
@@ -46,6 +48,7 @@
           </template>
         </v-btn>
       </template>
+
       <template v-if="videoData">
         <video
             v-for="(item, index) in videoData"
@@ -65,6 +68,7 @@
           <source :src="item.url" type="video/mp4" />
         </video>
       </template>
+
     </v-container>
   </v-app>
 </template>
