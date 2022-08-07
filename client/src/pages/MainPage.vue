@@ -10,7 +10,7 @@
       >
         Field
       </v-text-field>
-      <template v-if="Object.keys(rows).length <= 0 || url.length > 0">
+      <template v-if="!videoData || url.length > 0">
         <v-btn>
           <template v-if="loading">
             <v-progress-circular
@@ -34,9 +34,9 @@
           </template>
         </v-btn>
       </template>
-      <template v-if="Object.keys(rows).length > 0">
+      <template v-if="videoData">
         <v-btn
-            v-for="item in rows.formats"
+            v-for="item in videoData"
             :key="item.qualityLabel"
             @click="onClickRedirect(item.url)"
         >
@@ -46,9 +46,9 @@
           </template>
         </v-btn>
       </template>
-      <template v-if="Object.keys(rows).length > 0">
+      <template v-if="videoData">
         <video
-            v-for="(item, index) in rows.formats"
+            v-for="(item, index) in videoData"
             v-if="item.quality === 134 && !item.hasAudio"
             :key="item.quality + index"
             class="mt-5"
@@ -56,7 +56,7 @@
           <source :src="item.url" type="video/mp4" />
         </video>
         <video
-            v-for="(item, index) in rows.formats"
+            v-for="(item, index) in videoData"
             v-if="item.hasAudio"
             controls
             class="mt-5"
@@ -78,7 +78,7 @@ export default {
     return {
       loading: false,
       url: '',
-      rows: {},
+      videoData: null,
       rules: [
         (value) => !!value || "Введите ссылку",
         (value) => this.isURL(value) || "Некорректная ссылка",
@@ -102,14 +102,13 @@ export default {
       this.loading = true
       getInformationByUrl(this.url)
           .then(response => {
-            this.rows = response
+            this.videoData = response
             this.url = ''
           })
-          .catch(() => {
+          .finally(() => {
             this.url = ''
-            this.rows = {}
+            this.loading = false
           })
-          .finally(() => this.loading = false)
     }
   }
 }

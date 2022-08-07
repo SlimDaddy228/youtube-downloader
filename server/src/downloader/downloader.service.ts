@@ -25,26 +25,20 @@ export class DownloaderService {
         try {
             const info = await YT.getInfo(url)
 
-            console.log(info.formats)
-
-            result.formats = info.formats.map((item) => {
+            result = info.formats.map((item) => {
                 const {width, height, qualityLabel, itag: quality, url, hasAudio} = item
                 return {width, height, qualityLabel, quality, url, hasAudio}
             })
 
-            result.formats = this.removeDuplicate(result.formats).sort((a, b) => {
+            result = this.removeDuplicate(result).sort((a, b) => {
                 if (a.hasAudio > b.hasAudio)
                     return -1;
                 if (a.hasAudio < b.hasAudio)
                     return 1;
                 return 0;
             })
-
-            result.authorInfo = {
-
-            }
         } catch (e) {
-            throw new HttpException(`Видео не найдено ${url}`, HttpStatus.BAD_REQUEST)
+            throw new HttpException(`Видео не найдено ${url} ${e}`, HttpStatus.BAD_REQUEST)
         }
 
         return result

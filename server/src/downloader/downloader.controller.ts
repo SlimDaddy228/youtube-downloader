@@ -4,7 +4,7 @@ import {DownloaderService} from "./downloader.service";
 export class DownloaderController {
     constructor (private downloaderService: DownloaderService) {}
 
-    @Post('/getInformation')
+    @Post()
     getInfo(@Body() dto: any) {
         return this.downloaderService.getInformationByUrl(dto)
     }
